@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cenphx.com/sitemap-index.xml
