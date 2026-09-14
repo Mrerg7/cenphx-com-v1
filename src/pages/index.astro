@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 const STREAM_ID = 'c705a45d6d8c23cb22503949ffe8e4a6';
 const STREAM_CUSTOMER = 'customer-wa9cpywo3l4jte5c';
 const POSTER = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/thumbnails/thumbnail.jpg?time=&height=600`;
-const STREAM_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/iframe?muted=true&loop=true&autoplay=true&poster=${encodeURIComponent(POSTER)}&controls=false`;
+const HLS_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/manifest/video.m3u8`;
 ---
 
 <Layout>
@@ -20,14 +20,17 @@ const STREAM_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}
           style={`background-image: url('${POSTER}')`}
           aria-hidden="true"
         ></div>
-        <iframe
-          src={STREAM_SRC}
-          title="CenPHX Central Phoenix hero video"
-          loading="eager"
-          class="stream-hero__frame border-0"
-          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-          allowfullscreen="true"
-        ></iframe>
+        <video
+          id="hero-stream"
+          class="absolute inset-0 h-full w-full object-cover"
+          poster={POSTER}
+          muted
+          loop
+          playsinline
+          autoplay
+          preload="auto"
+          aria-label="CenPHX Central Phoenix hero video"
+        ></video>
         <div
           class="pointer-events-none absolute inset-0 bg-gradient-to-t from-mesa-950 via-mesa-950/45 to-mesa-950/20 sm:via-mesa-950/55 sm:to-mesa-950/15"
           aria-hidden="true"
@@ -51,6 +54,37 @@ const STREAM_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}
         </div>
       </div>
     </section>
+
+    <script is:inline define:vars={{ HLS_SRC }}>
+      (function () {
+        const video = document.getElementById('hero-stream');
+        if (!(video instanceof HTMLVideoElement)) return;
+
+        const tryPlay = () => {
+          video.muted = true;
+          video.play().catch(() => {});
+        };
+
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = HLS_SRC;
+          video.addEventListener('loadeddata', tryPlay, { once: true });
+          tryPlay();
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js';
+        script.async = true;
+        script.onload = () => {
+          if (!window.Hls || !window.Hls.isSupported()) return;
+          const hls = new window.Hls({ enableWorker: true, maxBufferLength: 10 });
+          hls.loadSource(HLS_SRC);
+          hls.attachMedia(video);
+          hls.on(window.Hls.Events.MANIFEST_PARSED, tryPlay);
+        };
+        document.head.appendChild(script);
+      })();
+    </script>
 
     <section id="place" class="section-padding bg-mesa-50">
       <div class="container-narrow max-w-3xl">
