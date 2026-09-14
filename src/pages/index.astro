@@ -3,8 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const STREAM_SRC =
-  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/c705a45d6d8c23cb22503949ffe8e4a6/iframe?muted=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-wa9cpywo3l4jte5c.cloudflarestream.com%2Fc705a45d6d8c23cb22503949ffe8e4a6%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false';
+const STREAM_ID = 'c705a45d6d8c23cb22503949ffe8e4a6';
+const STREAM_CUSTOMER = 'customer-wa9cpywo3l4jte5c';
+const POSTER = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/thumbnails/thumbnail.jpg?time=&height=600`;
+const STREAM_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/iframe?muted=true&loop=true&autoplay=true&poster=${encodeURIComponent(POSTER)}&controls=false`;
 ---
 
 <Layout>
@@ -12,17 +14,22 @@ const STREAM_SRC =
 
   <main class="flex-1">
     <section class="relative bg-mesa-950" aria-label="Hero">
-      <div class="relative isolate w-full overflow-hidden min-h-[calc(100svh-3.5rem)] sm:min-h-0 sm:pt-[54.32%]">
+      <div class="stream-hero relative isolate w-full overflow-hidden">
+        <div
+          class="absolute inset-0 bg-mesa-950 bg-cover bg-center"
+          style={`background-image: url('${POSTER}')`}
+          aria-hidden="true"
+        ></div>
         <iframe
           src={STREAM_SRC}
           title="CenPHX Central Phoenix hero video"
           loading="eager"
-          class="absolute inset-0 h-full w-full border-0"
+          class="stream-hero__frame border-0"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           allowfullscreen="true"
         ></iframe>
         <div
-          class="pointer-events-none absolute inset-0 bg-gradient-to-t from-mesa-950 via-mesa-950/40 to-mesa-950/10 sm:via-mesa-950/55 sm:to-mesa-950/15"
+          class="pointer-events-none absolute inset-0 bg-gradient-to-t from-mesa-950 via-mesa-950/45 to-mesa-950/20 sm:via-mesa-950/55 sm:to-mesa-950/15"
           aria-hidden="true"
         ></div>
         <div class="absolute inset-0 flex items-end">
