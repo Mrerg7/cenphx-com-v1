@@ -1,0 +1,152 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const STREAM_SRC =
+  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/c705a45d6d8c23cb22503949ffe8e4a6/iframe?muted=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-wa9cpywo3l4jte5c.cloudflarestream.com%2Fc705a45d6d8c23cb22503949ffe8e4a6%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false';
+---
+
+<Layout>
+  <Header />
+
+  <main class="flex-1">
+    <section class="relative bg-mesa-950">
+      <div class="relative w-full" style="padding-top: 54.32098765432099%;">
+        <iframe
+          src={STREAM_SRC}
+          title="CenPHX Central Phoenix hero video"
+          loading="lazy"
+          style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+          allowfullscreen="true"
+        ></iframe>
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-mesa-950 via-mesa-950/55 to-mesa-950/15"></div>
+        <div class="absolute inset-0 flex items-end">
+          <div class="container-narrow w-full pb-6 pt-16 sm:pb-12 sm:pt-20">
+            <p class="mb-3 text-[10px] font-semibold uppercase tracking-widestx text-sun-300 sm:text-xs">
+              Central Phoenix · Arizona · PHX
+            </p>
+            <h1 class="font-display text-4xl font-semibold leading-none text-white sm:text-6xl lg:text-7xl">
+              Cen<span class="text-sun-400">PHX</span>
+            </h1>
+            <p class="mt-4 max-w-xl text-sm leading-relaxed text-mesa-100/90 sm:mt-5 sm:text-lg">
+              The compact domain for Central Phoenix — city core plus the airport code everyone already knows.
+            </p>
+            <div class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
+              <a href="#value" class="btn-primary pointer-events-auto">Why it is valuable</a>
+              <a href="#acquisition" class="btn-secondary pointer-events-auto">$50,000</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="place" class="section-padding bg-mesa-50">
+      <div class="container-narrow max-w-3xl">
+        <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-500">The place</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-mesa-950 sm:text-4xl">Central Phoenix, written the short way</h2>
+        <div class="mt-6 space-y-4 text-sm leading-relaxed text-mesa-800 sm:text-base">
+          <p>
+            Central Phoenix is the part of the city people mean when they say midtown, downtown, Arcadia, and the Camelback corridor.
+            It is not a suburb name. It is the core.
+          </p>
+          <p>
+            <strong class="text-mesa-950">CenPHX.com</strong> compresses that geography into six letters: Cen for Central, PHX for Phoenix.
+            Locals already say both halves. The domain puts them together.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="value" class="section-padding bg-white">
+      <div class="container-narrow">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-500">The value</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-mesa-950 sm:text-4xl">Why this is the most valuable Central Phoenix name</h2>
+        </div>
+        <div class="mt-12 grid gap-4 sm:gap-6 md:grid-cols-2">
+          <article class="card">
+            <h3 class="font-display text-xl font-semibold text-mesa-950">SEO in the letters</h3>
+            <p class="mt-3 text-sm leading-relaxed text-mesa-700">
+              Searchers type Central Phoenix and PHX. The hostname contains both. Title, H1, and URL all point at the same local query.
+            </p>
+          </article>
+          <article class="card">
+            <h3 class="font-display text-xl font-semibold text-mesa-950">City-code lock</h3>
+            <p class="mt-3 text-sm leading-relaxed text-mesa-700">
+              PHX is the airport, the weather code, and the shorthand on listings. Pairing it with Central leaves little room for a rival phrase.
+            </p>
+          </article>
+          <article class="card">
+            <h3 class="font-display text-xl font-semibold text-mesa-950">Works across categories</h3>
+            <p class="mt-3 text-sm leading-relaxed text-mesa-700">
+              Real estate, hospitality, media, medical, and neighborhood retail can all sit under one geographic brand without a forced industry word.
+            </p>
+          </article>
+          <article class="card">
+            <h3 class="font-display text-xl font-semibold text-mesa-950">Short enough to print</h3>
+            <p class="mt-3 text-sm leading-relaxed text-mesa-700">
+              Six letters on a yard sign, a van, or a maps listing. No explanation required for anyone who lives inside the Loop 202.
+            </p>
+          </article>
+        </div>
+
+        <div class="mt-10 rounded-2xl bg-mesa-950 p-6 text-center sm:p-10">
+          <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-400">Asking price</p>
+          <p class="mt-3 font-display text-5xl font-semibold text-sun-300 sm:text-6xl">$50,000</p>
+          <p class="mt-3 text-sm text-mesa-200">A one-time acquisition for the Central Phoenix shorthand.</p>
+          <a href="#acquisition" class="btn-primary mt-6">Request terms</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="use" class="section-padding bg-mesa-50">
+      <div class="container-narrow grid gap-10 lg:grid-cols-2 lg:items-start">
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-500">The use</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-mesa-950 sm:text-4xl">Who this name is for</h2>
+          <p class="mt-4 text-sm leading-relaxed text-mesa-800 sm:text-base">
+            Operators who need the city core in the URL — not a invented brand that has to be taught. CenPHX is already the map.
+          </p>
+          <ul class="mt-8 space-y-4 text-sm text-mesa-800 sm:text-base">
+            <li class="flex gap-3"><span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-sun-400"></span><span><strong class="text-mesa-950">Real estate</strong> — listings, brokerages, and infill development in the core.</span></li>
+            <li class="flex gap-3"><span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-sun-400"></span><span><strong class="text-mesa-950">Hospitality & retail</strong> — a neighborhood name guests can type after dinner.</span></li>
+            <li class="flex gap-3"><span class="mt-2 h-2 w-2 shrink-0 rounded-full bg-sun-400"></span><span><strong class="text-mesa-950">Local media</strong> — a masthead that is the place, not a slogan.</span></li>
+          </ul>
+        </div>
+        <div class="rounded-2xl border border-mesa-200 bg-white p-6 sm:p-8">
+          <dl class="space-y-5">
+            <div class="flex items-baseline justify-between gap-4 border-b border-mesa-100 pb-4">
+              <dt class="text-sm text-mesa-600">Reads as</dt>
+              <dd class="font-display text-xl font-semibold text-mesa-950 sm:text-2xl">Central Phoenix</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 border-b border-mesa-100 pb-4">
+              <dt class="text-sm text-mesa-600">Market</dt>
+              <dd class="font-display text-xl font-semibold text-mesa-950 sm:text-2xl">Phoenix, AZ</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 border-b border-mesa-100 pb-4">
+              <dt class="text-sm text-mesa-600">Code</dt>
+              <dd class="font-display text-xl font-semibold text-mesa-950 sm:text-2xl">PHX</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4">
+              <dt class="text-sm text-mesa-600">Offer</dt>
+              <dd class="font-display text-xl font-semibold text-sun-500 sm:text-2xl">$50,000</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-mesa-200 bg-white py-10 sm:py-12">
+      <div class="container-narrow text-center">
+        <p class="mx-auto max-w-2xl text-xs leading-relaxed text-mesa-600 sm:text-sm">
+          Information presented is for demonstration and educational purposes only and does not constitute an offer of real estate or local services.
+          The domain is offered at the stated asking price; terms are subject to a written agreement.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
