@@ -11,29 +11,32 @@ const STREAM_SRC =
   <Header />
 
   <main class="flex-1">
-    <section class="relative bg-mesa-950">
-      <div class="relative w-full" style="padding-top: 54.32098765432099%;">
+    <section class="relative bg-mesa-950" aria-label="Hero">
+      <div class="relative isolate w-full overflow-hidden min-h-[calc(100svh-3.5rem)] sm:min-h-0 sm:pt-[54.32%]">
         <iframe
           src={STREAM_SRC}
           title="CenPHX Central Phoenix hero video"
-          loading="lazy"
-          style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+          loading="eager"
+          class="absolute inset-0 h-full w-full border-0"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           allowfullscreen="true"
         ></iframe>
-        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-mesa-950 via-mesa-950/55 to-mesa-950/15"></div>
+        <div
+          class="pointer-events-none absolute inset-0 bg-gradient-to-t from-mesa-950 via-mesa-950/40 to-mesa-950/10 sm:via-mesa-950/55 sm:to-mesa-950/15"
+          aria-hidden="true"
+        ></div>
         <div class="absolute inset-0 flex items-end">
-          <div class="container-narrow w-full pb-6 pt-16 sm:pb-12 sm:pt-20">
-            <p class="mb-3 text-[10px] font-semibold uppercase tracking-widestx text-sun-300 sm:text-xs">
+          <div class="container-narrow w-full pb-8 pt-20 sm:pb-12 sm:pt-20">
+            <p class="mb-2 text-[10px] font-semibold uppercase tracking-widestx text-sun-300 sm:mb-3 sm:text-xs">
               Central Phoenix · Arizona · PHX
             </p>
-            <h1 class="font-display text-4xl font-semibold leading-none text-white sm:text-6xl lg:text-7xl">
+            <h1 class="font-display text-5xl font-semibold leading-none text-white sm:text-6xl lg:text-7xl">
               Cen<span class="text-sun-400">PHX</span>
             </h1>
-            <p class="mt-4 max-w-xl text-sm leading-relaxed text-mesa-100/90 sm:mt-5 sm:text-lg">
+            <p class="mt-3 max-w-xl text-sm leading-relaxed text-mesa-100/90 sm:mt-5 sm:text-lg">
               The compact domain for Central Phoenix — city core plus the airport code everyone already knows.
             </p>
-            <div class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
+            <div class="mt-5 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
               <a href="#value" class="btn-primary pointer-events-auto">Why it is valuable</a>
               <a href="#acquisition" class="btn-secondary pointer-events-auto">$50,000</a>
             </div>
