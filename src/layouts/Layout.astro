@@ -73,6 +73,7 @@ const siteName = 'CenPHX';
       "name": "CenPHX.com",
       "description": "Premium domain for Central Phoenix, Arizona.",
       "url": "https://cenphx.com",
+      "image": ogImage,
       "brand": { "@type": "Brand", "name": "CenPHX" },
       "offers": {
         "@type": "Offer",
@@ -80,7 +81,40 @@ const siteName = 'CenPHX';
         "price": "50000",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "seller": { "@type": "Organization", "name": "Desert Rich", "email": "sales@desertrich.com" }
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": { "@type": "Organization", "name": "Desert Rich", "email": "sales@desertrich.com" },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": "US",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "USD"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 3,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 0,
+              "unitCode": "DAY"
+            }
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "US"
+          }
+        }
       },
       "review": [
         {
