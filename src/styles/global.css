@@ -32,6 +32,9 @@
   .btn-secondary {
     @apply inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/30 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 sm:w-auto;
   }
+  .btn-outline {
+    @apply inline-flex min-h-11 w-full items-center justify-center rounded-full border border-mesa-200 bg-white px-7 py-3 text-sm font-semibold text-mesa-950 transition hover:border-mesa-600 hover:bg-mesa-100 sm:w-auto;
+  }
   .card { @apply rounded-2xl border border-mesa-200 bg-white p-6 shadow-sm sm:p-7; }
 
   /* Tall mobile hero; <video object-cover> fills without Stream iframe letterboxing. */

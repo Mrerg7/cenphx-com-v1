@@ -1,18 +1,64 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Acquisition from '../components/Acquisition.astro';
+import { SITE, ACQUISITION_MAILTO } from '../config/site';
 
-const STREAM_ID = 'c705a45d6d8c23cb22503949ffe8e4a6';
-const STREAM_CUSTOMER = 'customer-wa9cpywo3l4jte5c';
-const POSTER = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/thumbnails/thumbnail.jpg?time=&height=600`;
-const HLS_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/manifest/video.m3u8`;
+type Insight = CollectionEntry<'insights'>;
+
+const STREAM_ID = SITE.streamId;
+const STREAM_CUSTOMER = SITE.streamHost.split('/')[0];
+const POSTER = SITE.ogImage;
+const HLS_SRC = `https://${STREAM_CUSTOMER}/${STREAM_ID}/manifest/video.m3u8`;
+
+const faqs = [
+  {
+    q: `Is ${SITE.domain} for sale?`,
+    a: `Yes. ${SITE.domain} is a premium domain name available for acquisition from the owner. Serious buyers can email ${SITE.email}. We respond personally within 1–2 business days.`,
+  },
+  {
+    q: 'What is the asking price?',
+    a: `The listed acquisition price is ${SITE.priceDisplay} USD, one-time, with full ownership and a clean title. Email us if you would like to discuss terms.`,
+  },
+  {
+    q: 'How do I buy this domain?',
+    a: `Email ${SITE.email} with your offer and timeline. Every transaction is completed through Escrow.com so funds and domain transfer are both protected.`,
+  },
+  {
+    q: 'What does CenPHX mean?',
+    a: "CenPHX is Central Phoenix written with the city code PHX. Cen for Central, PHX for Phoenix — six letters that already read as the urban core to anyone who lives inside the Loop 202.",
+  },
+  {
+    q: 'What is the domain designed for?',
+    a: 'CenPHX.com is built for a local brand — real estate, hospitality, media, medical, or neighborhood retail in the Central Phoenix core. The hostname carries the geography, so the name needs no explanation.',
+  },
+  {
+    q: 'Is the domain transfer safe?',
+    a: 'Yes. Acquisitions are escrow-protected via Escrow.com. The domain has a clean title and transfers to your registrar account, typically within 0–5 business days after cleared payment.',
+  },
+];
+
+const faqSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+
+const posts = (await getCollection('insights', (entry: Insight): entry is Insight => !entry.data.draft))
+  .sort((a: Insight, b: Insight) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
-<Layout>
+<Layout schemas={[faqSchema]}>
   <Header />
 
-  <main class="flex-1">
+  <main id="main-content" class="flex-1">
     <section class="relative bg-mesa-950" aria-label="Hero">
       <div class="stream-hero relative isolate w-full overflow-hidden">
         <div
@@ -38,17 +84,18 @@ const HLS_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/ma
         <div class="absolute inset-0 flex items-end">
           <div class="container-narrow w-full pb-8 pt-20 sm:pb-12 sm:pt-20">
             <p class="mb-2 text-[10px] font-semibold uppercase tracking-widestx text-sun-300 sm:mb-3 sm:text-xs">
-              Central Phoenix · Arizona · PHX
+              Central Phoenix domain for sale · Arizona · PHX
             </p>
             <h1 class="font-display text-5xl font-semibold leading-none text-white sm:text-6xl lg:text-7xl">
               Cen<span class="text-sun-400">PHX</span>
             </h1>
             <p class="mt-3 max-w-xl text-sm leading-relaxed text-mesa-100/90 sm:mt-5 sm:text-lg">
               The compact domain for Central Phoenix — city core plus the airport code everyone already knows.
+              Offered at {SITE.priceDisplay}.
             </p>
             <div class="mt-5 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
-              <a href="#value" class="btn-primary pointer-events-auto">Why it is valuable</a>
-              <a href="#acquisition" class="btn-secondary pointer-events-auto">$50,000</a>
+              <a href="#acquisition" class="btn-primary pointer-events-auto">Inquire — {SITE.priceDisplay}</a>
+              <a href="#value" class="btn-secondary pointer-events-auto">Why it is valuable</a>
             </div>
           </div>
         </div>
@@ -138,7 +185,7 @@ const HLS_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/ma
 
         <div class="mt-10 rounded-2xl bg-mesa-950 p-6 text-center sm:p-10">
           <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-400">Asking price</p>
-          <p class="mt-3 font-display text-5xl font-semibold text-sun-300 sm:text-6xl">$50,000</p>
+          <p class="mt-3 font-display text-5xl font-semibold text-sun-300 sm:text-6xl">{SITE.priceDisplay}</p>
           <p class="mt-3 text-sm text-mesa-200">A one-time acquisition for the Central Phoenix shorthand.</p>
           <a href="#acquisition" class="btn-primary mt-6">Request terms</a>
         </div>
@@ -175,38 +222,87 @@ const HLS_SRC = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_ID}/ma
             </div>
             <div class="flex items-baseline justify-between gap-4">
               <dt class="text-sm text-mesa-600">Offer</dt>
-              <dd class="font-display text-xl font-semibold text-sun-500 sm:text-2xl">$50,000</dd>
+              <dd class="font-display text-xl font-semibold text-sun-500 sm:text-2xl">{SITE.priceDisplay}</dd>
             </div>
           </dl>
         </div>
       </div>
     </section>
 
-    <section id="review" class="section-padding bg-white">
-      <div class="container-narrow max-w-3xl">
-        <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-500">Assessment</p>
-        <h2 class="mt-3 font-display text-3xl font-semibold text-mesa-950 sm:text-4xl">Rated 5.0 for Central Phoenix fit</h2>
-        <div class="mt-4 flex items-center gap-3 text-sm text-mesa-600">
-          <span class="text-lg tracking-widest text-sun-500" aria-hidden="true">★★★★★</span>
-          <span><strong class="text-mesa-950">5.0</strong> out of 5 · 1 rating</span>
-        </div>
-        <blockquote class="card mt-6">
-          <p class="text-sm leading-relaxed text-mesa-800 sm:text-base">
-            CenPHX compresses Central Phoenix and the PHX code into six letters. Both halves already read as the city, so the hostname needs no explanation and matches the phrase people search for the urban core.
+    <section id="faq" class="section-padding bg-white">
+      <div class="container-narrow">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-500">FAQ</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-mesa-950 sm:text-4xl">Questions buyers ask</h2>
+          <p class="mt-4 text-base leading-relaxed text-mesa-700 sm:text-lg">
+            Everything about the offer, the transfer, and the name. Something missing?
+            <a
+              href={ACQUISITION_MAILTO('Domain Inquiry: CenPHX.com')}
+              class="font-medium text-mesa-950 underline decoration-sun-400 underline-offset-4"
+            >
+              Ask us directly
+            </a>.
           </p>
-          <footer class="mt-4 text-xs text-mesa-500">— Desert Rich · September 14, 2026</footer>
-        </blockquote>
+        </div>
+
+        <div class="mx-auto mt-12 max-w-3xl space-y-4">
+          {
+            faqs.map((item) => (
+              <details class="card group">
+                <summary class="flex cursor-pointer list-none items-start justify-between gap-4 font-display text-xl font-semibold text-mesa-950 sm:text-2xl">
+                  <span>{item.q}</span>
+                  <svg
+                    class="mt-1 h-5 w-5 shrink-0 text-sun-500 transition-transform group-open:rotate-45"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                </summary>
+                <p class="mt-3 text-sm leading-relaxed text-mesa-700 sm:text-base">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
       </div>
     </section>
 
-    <section class="border-t border-mesa-200 bg-white py-10 sm:py-12">
-      <div class="container-narrow text-center">
-        <p class="mx-auto max-w-2xl text-xs leading-relaxed text-mesa-600 sm:text-sm">
-          Information presented is for demonstration and educational purposes only and does not constitute an offer of real estate or local services.
-          The domain is offered at the stated asking price; terms are subject to a written agreement.
-        </p>
-      </div>
-    </section>
+    {
+      posts.length > 0 && (
+        <section class="section-padding bg-mesa-50">
+          <div class="container-narrow">
+            <div class="mx-auto max-w-2xl text-center">
+              <p class="text-[11px] font-semibold uppercase tracking-widestx text-sun-500">Insights</p>
+              <h2 class="mt-3 font-display text-3xl font-semibold text-mesa-950 sm:text-4xl">
+                More on Central Phoenix &amp; the name
+              </h2>
+            </div>
+            <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post) => (
+                <a href={`/insights/${post.slug}/`} class="card group flex flex-col transition hover:-translate-y-1">
+                  <p class="text-[11px] font-medium uppercase tracking-widestx text-sun-500">
+                    {post.data.pubDate.toISOString().split('T')[0]}
+                  </p>
+                  <h3 class="mt-3 font-display text-xl font-semibold text-mesa-950 group-hover:text-mesa-700">
+                    {post.data.title}
+                  </h3>
+                  <p class="mt-3 text-sm leading-relaxed text-mesa-700">{post.data.description}</p>
+                  <span class="mt-4 text-sm font-medium text-mesa-900">Read more →</span>
+                </a>
+              ))}
+            </div>
+            <div class="mt-8 text-center">
+              <a href="/insights/" class="btn-outline">All insights</a>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <Acquisition />
   </main>
 
   <Footer />

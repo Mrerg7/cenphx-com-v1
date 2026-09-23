@@ -1,4 +1,5 @@
 ---
+import { SITE } from '../config/site';
 ---
 
 <header class="sticky top-0 z-50 border-b border-mesa-200/80 bg-mesa-50/90 backdrop-blur-md">
@@ -15,10 +16,13 @@
       </a>
 
       <nav class="hidden items-center gap-6 md:flex" aria-label="Main navigation">
-        <a href="#place" class="text-sm font-medium text-mesa-800 hover:text-sun-500">The Place</a>
-        <a href="#value" class="text-sm font-medium text-mesa-800 hover:text-sun-500">The Value</a>
-        <a href="#use" class="text-sm font-medium text-mesa-800 hover:text-sun-500">The Use</a>
-        <a href="#acquisition" class="rounded-full bg-mesa-950 px-4 py-2 text-xs font-semibold text-sun-300 hover:bg-mesa-800">$50,000</a>
+        <a href="/#place" class="text-sm font-medium text-mesa-800 hover:text-sun-500">The Place</a>
+        <a href="/#value" class="text-sm font-medium text-mesa-800 hover:text-sun-500">The Value</a>
+        <a href="/insights/" class="text-sm font-medium text-mesa-800 hover:text-sun-500">Insights</a>
+        <a href="/#faq" class="text-sm font-medium text-mesa-800 hover:text-sun-500">FAQ</a>
+        <a href="/#acquisition" class="rounded-full bg-mesa-950 px-4 py-2 text-xs font-semibold text-sun-300 hover:bg-mesa-800">
+          Inquire — {SITE.priceDisplay}
+        </a>
       </nav>
 
       <button type="button" id="mobile-menu-btn" class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-mesa-800 hover:bg-mesa-100 md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
@@ -31,10 +35,13 @@
 
   <div id="mobile-menu" class="hidden border-t border-mesa-200 bg-mesa-50 md:hidden">
     <div class="container-narrow space-y-1 py-3">
-      <a href="#place" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">The Place</a>
-      <a href="#value" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">The Value</a>
-      <a href="#use" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">The Use</a>
-      <a href="#acquisition" class="mt-2 block rounded-full bg-mesa-950 px-4 py-3 text-center text-sm font-semibold text-sun-300">Inquire — $50,000</a>
+      <a href="/#place" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">The Place</a>
+      <a href="/#value" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">The Value</a>
+      <a href="/insights/" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">Insights</a>
+      <a href="/#faq" class="block rounded-lg px-3 py-3 text-base font-medium text-mesa-900">FAQ</a>
+      <a href="/#acquisition" class="mt-2 block rounded-full bg-mesa-950 px-4 py-3 text-center text-sm font-semibold text-sun-300">
+        Inquire — {SITE.priceDisplay}
+      </a>
     </div>
   </div>
 </header>

@@ -1,0 +1,122 @@
+---
+import { SITE, ACQUISITION_MAILTO } from '../config/site';
+
+const steps = [
+  {
+    title: 'Send your inquiry',
+    body: `Email ${SITE.email} with your offer, intended use, and timeline. We respond within 1–2 business days.`,
+  },
+  {
+    title: 'Secure escrow',
+    body: 'Funds are held by Escrow.com — neither side moves until both are satisfied.',
+  },
+  {
+    title: 'Transfer in days',
+    body: 'The domain pushes to your registrar account, typically within 0–5 business days of cleared payment.',
+  },
+];
+
+const inquiryHref = ACQUISITION_MAILTO(
+  'Domain Inquiry: CenPHX.com — $50,000',
+  `Domain: ${SITE.domain} (asking ${SITE.priceDisplay})\n\nIntended use:\nOffer:\nTimeline:\n\nMessage:`,
+);
+---
+
+<section id="acquisition" class="bg-mesa-950 text-mesa-50">
+  <div class="container-narrow section-padding">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-widestx text-sun-400">Domain for sale</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-white sm:text-5xl">
+          Acquire <span class="text-sun-300">{SITE.domain}</span>
+        </h2>
+        <p class="mt-4 text-sm leading-relaxed text-mesa-200 sm:text-base">
+          Central Phoenix compressed into six letters — Cen for Central, PHX for Phoenix. Built for real estate,
+          hospitality, media, or any operator who wants the core of the city in the URL.
+        </p>
+
+        <p class="mt-8 font-display text-5xl font-semibold tracking-tight text-sun-300 sm:text-6xl">
+          {SITE.priceDisplay}
+        </p>
+        <p class="mt-2 text-xs uppercase tracking-widestx text-sun-500">Asking price · USD</p>
+
+        <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-mesa-100/90">
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4 shrink-0 text-sun-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Clean title, ready to transfer
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4 shrink-0 text-sun-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Escrow.com protected transaction
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4 shrink-0 text-sun-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Response within 1–2 business days
+          </li>
+        </ul>
+
+        <ol class="mt-10 space-y-6 border-t border-white/10 pt-8">
+          {
+            steps.map((step, i) => (
+              <li class="flex gap-4">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sun-400/40 font-display text-sm font-semibold text-sun-300">
+                  {i + 1}
+                </span>
+                <span>
+                  <span class="block font-display text-xl font-semibold text-white">{step.title}</span>
+                  <span class="mt-1 block text-sm leading-relaxed text-mesa-200/90">{step.body}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="mt-8 space-y-2 border-t border-white/10 pt-6 text-xs leading-relaxed text-mesa-300">
+          <p>
+            <span class="font-medium text-mesa-100">Delivery:</span> Digital domain transfer to the buyer's
+            registrar account. No physical shipping. Transfer typically completes within 0–5 business days after
+            cleared payment and signed agreement. Transfer fee: $0.
+          </p>
+          <p>
+            <span class="font-medium text-mesa-100">Returns:</span> All domain sales are final. Returns are not
+            permitted once the transfer is initiated or completed.
+          </p>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
+        <h3 class="font-display text-2xl font-semibold text-white sm:text-3xl">Request terms</h3>
+        <p class="mt-2 text-sm leading-relaxed text-mesa-200/90">
+          Serious inquiries only. Your email client will open with the details pre-filled and addressed to the
+          seller. Protected via Escrow.com at close.
+        </p>
+
+        <a href={inquiryHref} class="btn-primary mt-6 w-full">
+          Email sales@desertrich.com
+        </a>
+
+        <p class="mt-4 text-center text-xs leading-relaxed text-mesa-400">
+          Or write directly:
+          <a
+            href={`mailto:${SITE.email}?subject=${encodeURIComponent(`Domain Inquiry: ${SITE.domain}`)}`}
+            class="font-medium text-sun-300 underline decoration-sun-400/50 underline-offset-4 hover:text-sun-200"
+          >
+            {SITE.email}
+          </a>
+          · Confidential. Response within 1–2 business days.
+        </p>
+
+        <div class="mt-8 space-y-3 border-t border-white/10 pt-6 text-sm text-mesa-200/90">
+          <p class="flex items-start gap-3">
+            <svg class="mt-0.5 h-4 w-4 shrink-0 text-sun-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <span>Payment and transfer settle through Escrow.com — funds release only after the domain lands in your account.</span>
+          </p>
+          <p class="flex items-start gap-3">
+            <svg class="mt-0.5 h-4 w-4 shrink-0 text-sun-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+            <span>Clean title. No liens, no disputes, no pending UDRP — verified before listing.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

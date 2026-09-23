@@ -1,24 +1,184 @@
 ---
 import '../styles/global.css';
+import { SITE } from '../config/site';
+
+interface Breadcrumb {
+  name: string;
+  path: string;
+}
+
+interface ArticleMeta {
+  publishedTime?: string;
+  modifiedTime?: string;
+  tags?: string[];
+}
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
-  canonical?: string;
+  canonical?: string | false;
+  robots?: string;
+  ogType?: 'website' | 'article';
+  keywords?: string;
+  breadcrumbs?: Breadcrumb[];
+  article?: ArticleMeta;
+  schemas?: Record<string, unknown>[];
 }
 
-const POSTER =
-  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/c705a45d6d8c23cb22503949ffe8e4a6/thumbnails/thumbnail.jpg?time=&height=600';
-
 const {
-  title = 'CenPHX.com | Central Phoenix, Arizona Domain — $50,000',
-  description = 'CenPHX.com is the compact domain for Central Phoenix, AZ. City core plus PHX in six letters. Offered at $50,000.',
-  ogImage = POSTER,
-  canonical = 'https://cenphx.com/',
+  title = `${SITE.domain} | Central Phoenix, Arizona Domain — ${SITE.priceDisplay}`,
+  description = `${SITE.domain} is the compact domain for Central Phoenix, AZ. City core plus PHX in six letters. Offered at ${SITE.priceDisplay}.`,
+  ogImage = SITE.ogImage,
+  ogType = 'website',
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  keywords = 'Central Phoenix, CenPHX, Phoenix AZ, Central Phoenix real estate, PHX domain, CenPHX.com, domain for sale',
+  breadcrumbs = [],
+  article,
+  schemas = [],
 } = Astro.props;
 
-const siteName = 'CenPHX';
+const pathname = Astro.url.pathname;
+const normalizedPath =
+  pathname === '/' || pathname === '/index.html'
+    ? '/'
+    : pathname.endsWith('/')
+      ? pathname
+      : `${pathname}/`;
+const canonicalUrl =
+  Astro.props.canonical === false
+    ? null
+    : Astro.props.canonical
+      ? Astro.props.canonical.startsWith('http')
+        ? Astro.props.canonical
+        : `${SITE.url}${Astro.props.canonical}`
+      : `${SITE.url}${normalizedPath}`;
+
+const today = new Date().toISOString().split('T')[0];
+const streamPoster = `https://${SITE.streamHost}/${SITE.streamId}/thumbnails/thumbnail.jpg?time=&height=600`;
+
+const breadcrumbSchema =
+  breadcrumbs.length && canonicalUrl
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((crumb, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: crumb.name,
+          item: crumb.path.startsWith('http') ? crumb.path : `${SITE.url}${crumb.path}`,
+        })),
+      }
+    : null;
+
+const articleSchema =
+  ogType === 'article' && canonicalUrl
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        image: ogImage,
+        datePublished: article?.publishedTime,
+        dateModified: article?.modifiedTime ?? article?.publishedTime,
+        author: { '@type': 'Organization', name: SITE.seller, url: SITE.url },
+        publisher: { '@type': 'Organization', name: SITE.seller, url: SITE.url },
+        mainEntityOfPage: canonicalUrl,
+        keywords: keywords.split(',').map((k) => k.trim()),
+        inLanguage: 'en-US',
+      }
+    : null;
+
+const baseSchemas: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE.seller,
+    url: SITE.url,
+    logo: `${SITE.url}/favicon.svg`,
+    email: SITE.email,
+    description: `Owner and seller of the ${SITE.domain} premium domain name.`,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: SITE.email,
+      contactType: 'sales',
+      availableLanguage: 'English',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    description,
+    inLanguage: 'en-US',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: canonicalUrl ?? SITE.url,
+    primaryImageOfPage: { '@type': 'ImageObject', url: ogImage, caption: SITE.ogImageAlt },
+    datePublished: '2026-09-14',
+    dateModified: today,
+    inLanguage: 'en-US',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${SITE.domain} Premium Domain Name`,
+    description: `Exact-match .com domain for Central Phoenix — Cen + PHX in six letters. Available for acquisition at ${SITE.priceDisplay}.`,
+    url: SITE.url,
+    category: 'Premium Domain Name',
+    image: [ogImage],
+    brand: { '@type': 'Brand', name: SITE.domain },
+    offers: {
+      '@type': 'Offer',
+      url: `${SITE.url}/#acquisition`,
+      price: SITE.price,
+      priceCurrency: SITE.priceCurrency,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      priceValidUntil: SITE.priceValidUntil,
+      validFrom: '2026-09-14',
+      eligibleTransactionType: 'https://schema.org/FullPurchaseTransaction',
+      seller: { '@type': 'Organization', name: SITE.seller, url: SITE.url, email: SITE.email },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'US',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: SITE.priceCurrency },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 5,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 0,
+            unitCode: 'DAY',
+          },
+        },
+      },
+    },
+  },
+];
+
+const allSchemas = [
+  ...baseSchemas,
+  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ...(articleSchema ? [articleSchema] : []),
+  ...schemas,
+];
 ---
 
 <!doctype html>
@@ -29,132 +189,61 @@ const siteName = 'CenPHX';
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="Central Phoenix, CenPHX, Phoenix AZ, Central Phoenix real estate, PHX domain, CenPHX.com" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <link rel="canonical" href={canonical} />
-    <meta name="google-site-verification" content="uyGsoglH4u51F_k_gILnmJ4HuIP4YrvX0FlaLMCPAaY" />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content={robots} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta name="google-site-verification" content={SITE.googleSiteVerification} />
+    <meta name="author" content={SITE.seller} />
+    {canonicalUrl && <link rel="alternate" hreflang="en" href={canonicalUrl} />}
+    {canonicalUrl && <link rel="alternate" hreflang="x-default" href={canonicalUrl} />}
 
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:site_name" content={siteName} />
+    <meta property="og:image:alt" content={SITE.ogImageAlt} />
+    <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={SITE.ogImageAlt} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     <meta name="theme-color" content="#2b1c15" />
 
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": siteName,
-      "url": "https://cenphx.com",
-      "description": description
-    })} />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": title,
-      "description": description,
-      "url": canonical,
-      "about": { "@type": "Place", "name": "Central Phoenix", "address": { "@type": "PostalAddress", "addressLocality": "Phoenix", "addressRegion": "AZ", "addressCountry": "US" } },
-      "datePublished": "2026-09-14",
-      "dateModified": "2026-09-14"
-    })} />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": "CenPHX.com",
-      "description": "Premium domain for Central Phoenix, Arizona.",
-      "url": "https://cenphx.com",
-      "image": ogImage,
-      "brand": { "@type": "Brand", "name": "CenPHX" },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://cenphx.com/#acquisition",
-        "price": "50000",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "itemCondition": "https://schema.org/NewCondition",
-        "seller": { "@type": "Organization", "name": "Desert Rich", "email": "sales@desertrich.com" },
-        "hasMerchantReturnPolicy": {
-          "@type": "MerchantReturnPolicy",
-          "applicableCountry": "US",
-          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
-        },
-        "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": {
-            "@type": "MonetaryAmount",
-            "value": "0",
-            "currency": "USD"
-          },
-          "deliveryTime": {
-            "@type": "ShippingDeliveryTime",
-            "handlingTime": {
-              "@type": "QuantitativeValue",
-              "minValue": 1,
-              "maxValue": 3,
-              "unitCode": "DAY"
-            },
-            "transitTime": {
-              "@type": "QuantitativeValue",
-              "minValue": 0,
-              "maxValue": 0,
-              "unitCode": "DAY"
-            }
-          },
-          "shippingDestination": {
-            "@type": "DefinedRegion",
-            "addressCountry": "US"
-          }
-        }
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "author": { "@type": "Organization", "name": "Desert Rich" },
-          "datePublished": "2026-09-14",
-          "reviewBody": "CenPHX compresses Central Phoenix and the PHX code into six letters. Both halves already read as the city, so the hostname needs no explanation and matches the phrase people search for the urban core.",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": 5,
-            "bestRating": 5
-          }
-        }
-      ],
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": 5,
-        "bestRating": 5,
-        "ratingCount": 1,
-        "reviewCount": 1
-      }
-    })} />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What does CenPHX mean?",
-          "acceptedAnswer": { "@type": "Answer", "text": "CenPHX is Central Phoenix written with the city code PHX. It is the compact name for Phoenix's urban core." }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the asking price for CenPHX.com?",
-          "acceptedAnswer": { "@type": "Answer", "text": "CenPHX.com is offered at $50,000 USD. Inquiries: sales@desertrich.com." }
-        }
-      ]
-    })} />
+    <link rel="dns-prefetch" href={`https://${SITE.streamHost}`} />
+    <link rel="preload" as="image" href={streamPoster} />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+
+    {allSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
   <body class="min-h-screen flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-xl focus:bg-mesa-950 focus:px-4 focus:py-3 focus:font-semibold focus:text-white"
+    >
+      Skip to content
+    </a>
     <slot />
+    <a
+      href="/#acquisition"
+      class="fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-4 border-t border-white/10 bg-mesa-950/95 px-4 py-3 backdrop-blur-md sm:hidden"
+      aria-label={`Inquire about ${SITE.domain}`}
+    >
+      <span class="leading-tight">
+        <span class="block text-[10px] uppercase tracking-widestx text-sun-400">Domain for sale</span>
+        <span class="block font-display text-lg font-semibold text-sun-300">{SITE.priceDisplay}</span>
+      </span>
+      <span class="inline-flex min-h-10 items-center rounded-full bg-sun-400 px-5 text-sm font-medium text-mesa-950">
+        Inquire
+      </span>
+    </a>
   </body>
 </html>
