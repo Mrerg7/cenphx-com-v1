@@ -9,6 +9,9 @@ workers_dev = false
 [assets]
 directory = "./dist"
 binding = "ASSETS"
+# Serve dist/404.html (with its noindex meta) for unknown paths instead of an
+# empty body — keeps soft-404s out of the index and gives buyers a real page.
+not_found_handling = "404-page"
 # Required so www/http/index.html redirects in the Worker run before static assets
 # are served. Without this, matching assets short-circuit the Worker and www (and
 # /index.html) return 200 with a canonical pointing at apex — GSC "Alternate page
